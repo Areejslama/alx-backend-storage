@@ -1,6 +1,7 @@
 -- this script to define trigger
-CREATE TRIGGER quantity AFTER INSERT ON items
+CREATE TRIGGER value AFTER INSERT ON orders
 FOR EACH ROW
 BEGIN
-	SET @order = @order - NEW.quantity_id
-END
+	SET @quantity = @quantity - NEW.quantity_orderd
+	WHERE id = NEW.item_id
+END;
