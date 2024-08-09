@@ -1,11 +1,14 @@
 -- this script to define trigger
 DELIMITER //
-CREATE TRIGGER value AFTER INSERT ON orders
+
+CREATE TRIGGER value
+AFTER INSERT ON orders
 FOR EACH ROW
 BEGIN
-	UPDATE items
-	SET quantity = quantity - NEW.quantity_ordered
-	WHERE name = NEW.item_name;
+    UPDATE items
+    SET quantity = quantity - NEW.number
+    WHERE name = NEW.item_name;
 END;
 //
+
 DELIMITER ;
