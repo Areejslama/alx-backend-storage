@@ -2,7 +2,5 @@
 CREATE TRIGGER value AFTER INSERT ON orders
 FOR EACH ROW
 BEGIN
-	UPDATE items
 	SET @quantity = @quantity - NEW.quantity_orderd
-	WHERE id = NEW.item_id
 END;
