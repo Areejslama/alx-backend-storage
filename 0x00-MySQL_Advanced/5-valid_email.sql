@@ -6,7 +6,7 @@ FOR EACH ROW
 BEGIN
 	update valid_email
 	SET username = CONCAT(username,  NEW.email)
-	WHERE name = NEW.valid_email
+	WHERE name = NEW.valid_email;
 END;
 //
 
