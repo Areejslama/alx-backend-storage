@@ -10,8 +10,8 @@ BEGIN
 	FROM projects
 	WHERE name = project_name;
 
-	INSERT INTO USERS(user_id, project_id)
-	VALUES(user_id, project_id)
+	INSERT INTO USERS(user_id)
+	VALUES(user_id)
 END //
 
 DELIMITER ;
