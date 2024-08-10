@@ -3,8 +3,8 @@ DELIMITER //
 
 CREATE PROCEDURE ComputeAverageScoreForUser(user_id INT)
 BEGIN
-	DECLARE score_sum INT;
-	DECLARE score_count INT;
+	DECLARE score_sum INT DEFAULT 0;
+	DECLARE score_count INT DEFAULT 0;
 
 	SELECT SUM(score)
 	INTO score_sum
@@ -20,7 +20,7 @@ BEGIN
 	UPDATE users
 
 	SET users.average_score =  IF(score_count = 0, 0, score_sum / score_count)
-        WHERE users.id = user.id;
+        WHERE users.id = user_id;
 END //
 
 DELIMITER ;
