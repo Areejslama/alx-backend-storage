@@ -17,10 +17,10 @@ BEGIN
 	FROM  corrections
 	WHERE  corrections.user_id = user_id;
 
-	update users
+	UPDATE users
 
-	SET users.average_score =  IF(score_count = 0, 0, score_count / score_count)
-        WHERE users.id = users.id;
+	SET users.average_score =  IF(score_count = 0, 0, score_sum / score_count)
+        WHERE users.id = user.id;
 END //
 
 DELIMITER ;
