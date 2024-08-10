@@ -1,19 +1,26 @@
 -- this script to create procedure
 DELIMITER //
 
-CREATE PROCEDURE ComputeAverageScoreForUser(user_id DECIMAL)
+CREATE PROCEDURE ComputeAverageScoreForUser(user_id INT)
 BEGIN
-	DECLARE project_id INT DEFAULT 0;
-	DECLARE avg_score FLOAT;
+	DECLARE score_sum INT;
+	DECLARE score_count INT;
 
-	SELECT AVG(score)
-	INTO average_score
-	FROM users
-	WHERE id = user_id;
+	SELECT SUM(score)
+	INTO score_sum
+	FROM corrections
+	WHERE corrections.user_id = user_id;
 
 
-        INSERT INTO correction(user_id, project_id, score)
-        VALUES(user_id, project_id, average_score)
+	SELECT COUNT(*)
+	INTO  score_count	
+	FROM  corrections
+	WHERE  corrections.user_id = user_id;
+
+	update users
+
+	SET users.average_score =  IF(score_count = 0, 0, score_count / score_count)
+        WHERE users.id = users.id;
 END //
 
 DELIMITER ;
