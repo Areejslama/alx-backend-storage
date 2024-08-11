@@ -1,5 +1,5 @@
 -- this script to sort bands
-SELECT band_name, (IFNULL(split, 0) - IFNULL(formed, 0))
+SELECT band_name, (IFNULL(split, 2020) - formed) AS lifespan
 FROM metal_bands
 WHERE style = 'Glam rock'
 ORDER BY lifespan DESC;
