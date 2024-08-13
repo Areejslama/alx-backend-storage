@@ -1,0 +1,2 @@
+// this script to liset specific document
+db.school.find({"name" : "Holberton school"})
