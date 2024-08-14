@@ -1,2 +1,2 @@
 // this script to list document
-db.school.findOne({"name" : "Holberton"})
+db.school.find({}, {"name" : "Holberton"})
