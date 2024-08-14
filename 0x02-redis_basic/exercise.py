@@ -21,13 +21,13 @@ class Cache:
     def get(self, Key: str, fn: [Callable]):
         """define get method"""
         data = self._redis.set(key)
-        if data is not None and fn in not None:
+        if data is not None:
             fn(data)
         return data
     
     def get_str(self, key: str):
         """define get function"""
-        val =  self._redis.get(key)
+        val =  self._redis.get(key, lambda d: d.decode("utf-8"))
         return val
 
     def get_int(self):
