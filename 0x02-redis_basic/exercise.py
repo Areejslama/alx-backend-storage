@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """this script to define redis"""
 import redis
-from typing import Any, Callable
+from typing import Union, Callable
 from uuid import uuid4
 
 class Cache:
