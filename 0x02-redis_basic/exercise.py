@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """this script to define redis"""
 import redis
-from typing import Union, Callable
+from typing import Union, Callable, Any, Optional
 from uuid import uuid4
 
 class Cache:
@@ -18,7 +18,7 @@ class Cache:
 
         return key
     
-    def get(self, key: str, fn: Optional[Callable]):
+    def get(self, key: str, fn: Optional[Callable[[bytes], Any]] = None) -> Any:):
         """define function"""
         data = self._redis.get(key)
         if data is not None and fn is not None:
