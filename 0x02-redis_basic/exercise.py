@@ -18,10 +18,10 @@ class Cache:
 
         return key
     
-    def get(self, Key: str, fn: [Callable]):
+    def get(self, key: str, fn: [Callable]):
         """define get method"""
-        data = self._redis.set(key)
-        if data is not None and fn is not None:
+        data = self._redis.get(key)
+        if data is not None:
             fn(data)
         return data
     
