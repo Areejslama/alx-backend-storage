@@ -31,5 +31,5 @@ class Cache:
         return data
 
     def get_int(self):
-        data = self.__redis.get(key, int)
+        data = self._redis.get(key, int)
         return data
