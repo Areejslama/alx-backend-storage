@@ -18,18 +18,19 @@ class Cache:
 
         return key
     
-    def get(self, key: str, fn: [Callable]):
-        """define get method"""
+    def get(self, key: str, fn: Optional[Callable]):
+        """define function"""
         data = self._redis.get(key)
-        if data is not None:
-            fn(data)
-        return data
-    
-    def get_str(self, key: str):
-        """define get function"""
-        data = self.get(key,  lambda d: d.decode("utf-8"))
+        if data is not None and fn is not None:
+            return fn(data)
         return data
 
-    def get_int(self):
+    def get_str(self, key: str) -> Optional[str]:
+        """Retrieve data as a string from Redis"""
+        data = self.get(key, lambda d: d.decode("utf-8"))
+        return data
+
+    def get_int(self, key: str) -> Optional[int]:
+        """Retrieve data as an integer from Redis"""
         data = self.get(key, int)
         return data
