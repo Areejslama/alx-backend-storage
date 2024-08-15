@@ -12,14 +12,13 @@ class Cache:
         self._redis.flushdb()
 
     def store(self, data: Union[str, bytes, int, float]) -> str:
-        """define store method"""
+        """Store the data in Redis and return a unique key"""
         key = str(uuid4())
         self._redis.set(key, data)
-
         return key
-    
-    def get(self, key: str, fn: Optional[Callable[[bytes], Any]] = None) -> Any:):
-        """define function"""
+
+    def get(self, key: str, fn: Optional[Callable[[bytes], Any]] = None) -> Any:
+        """Retrieve data from Redis and optionally apply a transformation"""
         data = self._redis.get(key)
         if data is not None and fn is not None:
             return fn(data)
