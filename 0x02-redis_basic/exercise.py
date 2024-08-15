@@ -27,9 +27,9 @@ class Cache:
     
     def get_str(self, key: str):
         """define get function"""
-        data = self._redis.get(key,  lambda d: d.decode("utf-8"))
+        data = self.get(key,  lambda d: d.decode("utf-8"))
         return data
 
     def get_int(self):
-        data = self._redis.get(key, int)
+        data = self.get(key, int)
         return data
