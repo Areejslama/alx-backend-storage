@@ -9,11 +9,11 @@ from functools import wraps
 def count_calls(method: Optional[Callable]) -> Callable:
         """define decorator"""
         @wraps(method)
-        def wrapper(self, *args, **kwargs ):
+        def wrapper(self, *args, **kwds ):
             """define function"""
-            key = f"{method.__name__}_calls"
+            key = method.__qualname__
             self._redis.incr(key)
-            return method(self, *args, **kwargs)
+            return method(self, *args, **kwds)
         return wrapper
 
 class Cache:
