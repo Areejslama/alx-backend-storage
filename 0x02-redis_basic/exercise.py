@@ -16,6 +16,20 @@ def count_calls(method: Callable) -> Callable:
             return method(self, *args, **kwds)
         return wrapper
 
+def call_history(method: Callable) ->  Callable:
+    """define the function"""
+    @wraps(method)
+    def wrapper(self, *args, **kwds):
+         key = method.__qualname__
+         l_input = key + ":inputs"
+         l_output = key + ":outputs"
+         data = str(args)
+         self._redis.rpush(l_input, data)
+         m =  method(self, *args, **kwds)
+         self._redis.rpush(l_output, str(m))
+         return m
+    return wrapper
+
 class Cache:
     """define class"""
     def __init__(self):
@@ -24,6 +38,7 @@ class Cache:
         self._redis.flushdb()
 
     @count_calls
+    @call_history
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """Store the data in Redis and return a unique key"""
         key = str(uuid4())
