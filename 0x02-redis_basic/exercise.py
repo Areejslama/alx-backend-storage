@@ -7,28 +7,30 @@ from functools import wraps
 
 
 def count_calls(method: Callable) -> Callable:
-        """define decorator"""
-        @wraps(method)
-        def wrapper(self, *args, **kwds ):
-            """define function"""
-            key = method.__qualname__
-            self._redis.incr(key)
-            return method(self, *args, **kwds)
-        return wrapper
+    """define decorator"""
+    @wraps(method)
+    def wrapper(self, *args, **kwds):
+        """define function"""
+        key = method.__qualname__
+        self._redis.incr(key)
+        return method(self, *args, **kwds)
+    return wrapper
 
-def call_history(method: Callable) ->  Callable:
+
+def call_history(method: Callable) -> Callable:
     """define the function"""
     @wraps(method)
     def wrapper(self, *args, **kwds):
-         key = method.__qualname__
-         l_input = key + ":inputs"
-         l_output = key + ":outputs"
-         data = str(args)
-         self._redis.rpush(l_input, data)
-         m =  method(self, *args, **kwds)
-         self._redis.rpush(l_output, str(m))
-         return m
+        key = method.__qualname__
+        l_input = key + ":inputs"
+        l_output = key + ":outputs"
+        data = str(args)
+        self._redis.rpush(l_input, data)
+        m = method(self, *args, **kwds)
+        self._redis.rpush(l_output, str(m))
+        return m
     return wrapper
+
 
 class Cache:
     """define class"""
@@ -45,7 +47,8 @@ class Cache:
         self._redis.set(key, data)
         return key
 
-    def get(self, key: str, fn: Optional[Callable[[bytes], Any]] = None) -> Any:
+    def get(self, key: str,
+            fn: Optional[Callable[[bytes], Any]] = None) -> Any:
         """Retrieve data from Redis and optionally apply a transformation"""
         data = self._redis.get(key)
         if data is not None and fn is not None:
@@ -61,17 +64,18 @@ class Cache:
         """Retrieve data as an integer from Redis"""
         data = self.get(key, int)
         return data
-    
+
     def replay(func: callable):
         """define function"""
         key = func.__qualname__
-        data1 = self.__redis.lrange(key: inputs, 0, -1)
-        data2 = self.__redis.lrange(key: outputs, 0, -1)
-        print({key} was called {len(data1)} times:)
+        data1 = self.__redis.lrange("{}:inputs".format(key), 0, -1)
+        data2 = self.__redis.lrange("{}:inputs".format(key), 0, -1)
+        print("{} was called {} times:".format
+              (func.__qualname__, len(data1)))
         for k, v in zip(data1, data2):
-        val = '{}(*{}) -> {}'.format(
-            key,
-            k.decode('utf-8'),
-            v.decode('utf-8')
-        )
-        print(val)
+            val = '{}(*{}) -> {}'.format(
+                    key,
+                    k.decode('utf-8'),
+                    v.decode('utf-8')
+                    )
+            print(val)
