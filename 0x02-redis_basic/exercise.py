@@ -67,14 +67,17 @@ class Cache:
 
     def replay(func: callable):
         """define function"""
-        key = func.__qualname__
-        data1 = self.__redis.lrange(f"{key}:inputs", 0, -1)
-        data2 = self.__redis.lrange(f"{key}:outputs", 0, -1)
-        print(f"{key} was called {len(data1)} times:")
-        for k, v in zip(data1, data2):
-            val = '{}(*{}) -> {}'.format(
-                    key,
-                    k.decode('utf-8'),
-                    v.decode('utf-8')
-                    )
-            print(val)
+         key = func.__qualname__
+
+    data1 = self._redis.lrange(f"{key}:inputs", 0, -1)
+    data2 = self._redis.lrange(f"{key}:outputs", 0, -1)
+
+    print(f"{key} was called {len(data1)} times:")
+    
+    for k, v in zip(data1, data2):
+        val = '{}(*{}) -> {}'.format(
+            key,
+            k.decode('utf-8'),
+            v.decode('utf-8')
+        )
+        print(val)
