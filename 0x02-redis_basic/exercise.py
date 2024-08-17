@@ -31,22 +31,24 @@ def call_history(method: Callable) -> Callable:
         return m
     return wrapper
 
+
 def replay(func: callable):
-        """Replays the history"""
-        key = func.__qualname__
+    """Replays the history"""
+    r = redis.Redis()
+    key = func.__qualname__
 
-        data1 = self._redis.lrange(f"{key}:inputs", 0, -1)
-        data2 = self._redis.lrange(f"{key}:outputs", 0, -1)
+    data1 = r.lrange(f"{key}:inputs", 0, -1)
+    data2 = r.lrange(f"{key}:outputs", 0, -1)
 
-        print(f"{key} was called {len(data1)} times:")
+    print(f"{key} was called {len(data1)} times:")
 
-        for k, v in zip(data1, data2):
-            val = '{}(*{}) -> {}'.format(
-                    key,
-                    k.decode('utf-8'),
-                    v.decode('utf-8')
-                    )
-            print(val)
+    for k, v in zip(data1, data2):
+        val = '{}(*{}) -> {}'.format(
+                key,
+                k.decode('utf-8'),
+                v.decode('utf-8')
+                )
+        print(val)
 
 
 class Cache:
